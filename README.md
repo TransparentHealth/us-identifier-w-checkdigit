@@ -14,14 +14,14 @@ The prefix is placed in front of the 9 digit number before calculating the check
 Here is some python code to illustrate 
 
 
-  from luhn import generate
+    from luhn import generate
   
-  LUHN_PREFIX_SSN = "10000"
-  LUHN_PREFIX_ITIN = "20000"
-  LUHN_PREFIX_FEIN = "30000"
-  value = "30000991234567"
-  checkdigit = generate(value)
-  print("%s%s" %(value,checkdigit)
+    LUHN_PREFIX_SSN = "10000"
+    LUHN_PREFIX_ITIN = "20000"
+    LUHN_PREFIX_FEIN = "30000"
+    value = "30000991234567"
+    checkdigit = generate(value)
+    print("%s%s" %(value,checkdigit)
 
 For example, an `FEIN` with the number `99-1234567` would generated using the input
 `30000991234567`, resulting in the checkdigit `3`, with the resulting ID being `300009912345673`.
