@@ -1,36 +1,60 @@
-Checkdigits for SSNS, ITINs, and FEINs.
-=======================================
+Checkdigits for US Federal Identifiers
+======================================
 
-Identify nd differentiate these identifiers with checkdigits.
+This repo contains illustrative code on how 
+checkdigits could be added to existing US national identifier types.  These are types are: 
 
-This repo contains illustrative code on how checkdigits could be added to SSNs, ITINs, 
-and FEINs. Addingh checkdigits to identifier storage provides better protection of
-Personaly identifiable information (PII) by helping identify and 
-differentiate these sensitve values.
+* SSN - Social Security Number
+* ITIN -Individual Tax Identification Number
+* FEIN - Federal Employer Identification Number
 
-The proposal is simply to apply the Luhn algorthm with a prefixed code to identify thge identifier type.
-Each prefix will identity the identifier type; either SSN, ITIN, or FEIN.
+This library uses Luhn with a provenance prefix for each type.  See the blog article here: https://transparenthealth.org/upgrading-ssn-checkdigit-proposal.html for more information.
 
-The prefix is placed in front of the 9 digit number before calculating the checkdigit.
-Here is some python code to illustrate 
+## Command Line Usage
 
+### Generate a checkdigit
+
+Generate a checkdigit for an FEIN `99-1234567`:
+
+    python generate_id_luhn.py 991234567 FEIN
+
+Output:
+
+    3001009912345673
+
+Generate a checkdigit for an SSN `123-45-6789`:
+
+    python generate_id_luhn.py 123456789 SSN
+
+Generate a checkdigit for an ITIN `9XX-7X-XXXX`:
+
+    python generate_id_luhn.py 9XX7XXXX ITIN
+
+
+### Verify a checkdigit
+
+Verify an FEIN with checkdigit `3001009912345673`:
+
+    python verify_id_luhn.py 3001009912345673 FEIN
+
+Verify an SSN with checkdigit:
+
+    python verify_id_luhn.py 1234567891 SSN
+
+
+## How It Works
+
+The prefix is placed in front of the 9 digit number before calculating the checkdigit. Here is some Python code to illustrate:
 
     from luhn import generate
   
     LUHN_PREFIX_SSN = "10000"
     LUHN_PREFIX_ITIN = "20000"
     LUHN_PREFIX_FEIN = "30000"
-    value = "30000991234567"
+    value = "%s991234567" % (LUHN_PREFIX_FEIN)
     checkdigit = generate(value)
-    print("%s%s" %(value,checkdigit)
+    print("%s%s" %(value,checkdigit))
 
-For example, an `FEIN` with the number `99-1234567` would generated using the input
-`30000991234567`, resulting in the checkdigit `3`, with the resulting ID being `300009912345673`.
-
-Under this system, anyone can generate checkdigits for SSN, ITIN, and EINS.  Anyone 
-with the check digit included with their identifier can do a sanity 
-check to see if the identifier is of the expected type.
-
-See `generate_id_luhn.py` and `verify_id_luhn.py` as other examples.
+For example, an `FEIN` with the number `99-1234567` would be generated using the input `30000991234567`, resulting in the checkdigit `3`, with the resulting ID being `9912345673`.
 
 
